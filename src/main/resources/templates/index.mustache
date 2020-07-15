@@ -4,24 +4,79 @@
     <meta charset="UTF-8">
     <title>ERC20 Functional Specification Verifier</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/app/basic.css"/>
     <style>
         .container{
             max-width:100%;
         }
-
     </style>
 
 </head>
-<body class="bg-light" onload="setup()">
-<div class="filebox">
-    <input name="files[]" type="file" id="files" size="30" /><br>
-    <input name="files[]" type="file" id="files" size="30" /><br>
-    <input name="files[]" type="file" id="files" size="30" /><br>
-    <button type="button"
-</div>
+<body class="bg-light text-center">
+    <div class="py-5">
+        <h1>ERC20 Functional Specification Verifier</h1>
+    </div>
+    <div class="pb-4">
+        <h4>Attach Three Files of Verifier</h4>
+    </div>
+        <div class="py-1">ERC20 Token Solidity Source</div>
+        <div class="py-1">Target Solidity Source</div>
+        <div class="py-1">Test Setting</div>
+    <div>
+        <form id="file-upload-form" class="md-form">
+            <div class="fileBox">
+                <label for="file">업로드</label>
+                <input type="file" id="file">
+                <input class="upload-name" value="ERC20 Token Solidity Source">
+            </div>
+            <button type="button" id="btn-file-upload">Verify</button>
+        </form>
+        <div id="output" type="text/plain">
+            output.....
+        </div>
+    </div>
 </body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
+    $(document).ready(function(){
+        $('#btn-file-upload').on('click', function() {
+            var fileName1 = $('#file1').val();
+            var fileName2 = $('#file2').val();
+            var fileName3 = $('#file3').val();
+            fileName1 = fileName1.slice(fileName1.indexOf(".") + 1).toLowerCase();
+            fileName2 = fileName2.slice(fileName2.indexOf(".") + 1).toLowerCase();
+            fileName3 = fileName3.slice(fileName3.indexOf(".") + 1).toLowerCase();
+{{! 파일 확장자 확인
+            var extension = "txt"
+            if (fileName1 != extension || fileName2 != extension || fileName3 != extension) {
+                alert("File Extension must be txt");
+                $("#imagefile").val("");
+                return;
+            }
+}}
+            console.log("file extension ended");
+            var form = $('#file-upload-form')[0];
+            var formData = new FormData(form);
 
+            $.ajax({
+                type: 'POST',
+                url: '/',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success : function(data){
+                    $('#output').html(data);
+                },
+                error : function(){
+                    alert("Communication Failure");
+                }
+            });
+        });
+        $("#file").on('change',function(){
+            var fileName = $("#file").val();
+            $(".upload-name").val(fileName);
+        });
+    });
 </script>
 
 </html>
