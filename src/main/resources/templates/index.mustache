@@ -12,52 +12,62 @@
     </style>
 
 </head>
-<body class="bg-light text-center">
+<body class="bg-light text-center page-padding">
     <div class="py-5">
         <h1>ERC20 Functional Specification Verifier</h1>
     </div>
     <div class="pb-4">
-        <h4>Attach Three Files of Verifier</h4>
+        <h4>Attach Three Files...........</h4>
+        <h4>and some Messages............</h4>
+        <h4>Blah Blah Blah...............</h4>
     </div>
-        <div class="py-1">ERC20 Token Solidity Source</div>
-        <div class="py-1">Target Solidity Source</div>
-        <div class="py-1">Test Setting</div>
     <div>
-        <form id="file-upload-form" class="md-form">
-            <div class="fileBox">
-                <label for="file">업로드</label>
-                <input type="file" id="file">
-                <input class="upload-name" value="ERC20 Token Solidity Source">
+        <form id="file-upload-form" class="md-form py-3">
+            <div class="fileBox pb-2">
+                <label for="file1">업로드</label>
+                <input type="file" id="file1" name="file1">
+                <input class="upload-name1 upload" value="ERC20 Token Solidity Source"><br>
+                <label for="file2">업로드</label>
+                <input type="file" id="file2" name="file2">
+                <input class="upload-name2 upload" value="Target Solidity Source"><br>
+                <label for="file3">업로드</label>
+                <input type="file" id="file3" name="file3">
+                <input class="upload-name3 upload" value="Test Setting"><br>
             </div>
-            <button type="button" id="btn-file-upload">Verify</button>
+            <button type="button" id="btn-file-upload" class="btn btn-outline-primary btn-lg mx-2"> Verify </button>
         </form>
-        <div id="output" type="text/plain">
-            output.....
-        </div>
+        <pre id="output" type="text/plain" class="text-md-left output">
+        </pre>
+        <hr>
+        <pre class="output">
+This message will be replaced later
+The contract source code must be verified on etherscan, and be compiled with Solidity v0.4 or v0.5. This page uses tinchoabbate's slither-scripts to check whether a contract is a valid ERC20 or not using Slither. The script does not verify that the functions found behave as expected. It just checks for matching signatures, return types, existence of custom modifiers, event emissions, among others. These scripts may have bugs, use them at your own risk.
+        </pre>
     </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
     $(document).ready(function(){
         $('#btn-file-upload').on('click', function() {
+
             var fileName1 = $('#file1').val();
             var fileName2 = $('#file2').val();
             var fileName3 = $('#file3').val();
             fileName1 = fileName1.slice(fileName1.indexOf(".") + 1).toLowerCase();
             fileName2 = fileName2.slice(fileName2.indexOf(".") + 1).toLowerCase();
             fileName3 = fileName3.slice(fileName3.indexOf(".") + 1).toLowerCase();
-{{! 파일 확장자 확인
             var extension = "txt"
             if (fileName1 != extension || fileName2 != extension || fileName3 != extension) {
                 alert("File Extension must be txt");
                 $("#imagefile").val("");
                 return;
             }
-}}
+
             console.log("file extension ended");
             var form = $('#file-upload-form')[0];
             var formData = new FormData(form);
 
+            $('#btn-file-upload').text('Verifying...');
             $.ajax({
                 type: 'POST',
                 url: '/',
@@ -71,11 +81,17 @@
                     alert("Communication Failure");
                 }
             });
+            $('#btn-file-upload').text('Verify');
         });
-        $("#file").on('change',function(){
-            var fileName = $("#file").val();
-            $(".upload-name").val(fileName);
+        var i = 1;
+        $("input[id^='file']").each(function(){
+            $(this).on('change',function(){
+                var fileName = $(this).val();
+                $(".upload-name"+i).val(fileName);
+                i = i+1;
+            });
         });
+
     });
 </script>
 
