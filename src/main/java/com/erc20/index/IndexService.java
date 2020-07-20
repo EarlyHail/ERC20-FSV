@@ -18,9 +18,16 @@ public class IndexService {
     private String dir2 = "copyDir2";
     private String dir3 = "copyDir3";
     private String resultDir = "resultDir";
+    private boolean isWindows;
 
     public String runModule(MultipartHttpServletRequest multi) throws IOException {
         String userToken = UUID.randomUUID().toString();
+
+        if(System.getProperty("os.name").indexOf("Windows") > -1){
+            isWindows = true;
+        }else{
+            isWindows = false;
+        }
 
         copyModule(userToken);
 
@@ -35,11 +42,16 @@ public class IndexService {
 
     private void copyModule(String userToken) {
         try {
-            String windowsCopyCommand = "cmd /c echo d | " +
-                    "xcopy \"" + absolutePath + File.separator + "module\" \"" + absolutePath + File.separator + userToken + "\" /k /h /e";
-            String linuxCopyCommand = "/bin/sh -c cp " + absolutePath + File.separator + "module " + absolutePath + File.separator + userToken;
+            String copyCommand="";
+            if(isWindows){
+                copyCommand = "cmd /c echo d | " +
+                        "xcopy \"" + absolutePath + File.separator + "module\" \"" + absolutePath + File.separator + userToken + "\" /k /h /e";
+            }else{
+                copyCommand = "/bin/sh -c cp " + absolutePath + File.separator + "module " + absolutePath + File.separator + userToken;
+
+            }
             Runtime r = Runtime.getRuntime();
-            Process p = r.exec(windowsCopyCommand);
+            Process p = r.exec(copyCommand);
 
             BufferedReader stdInput = new BufferedReader(new
                     InputStreamReader(p.getInputStream()));
@@ -105,7 +117,7 @@ public class IndexService {
                 if (line.startsWith("\u001B"))
                     printing = true;
                 if (printing) {
-                    System.out.println(line);
+//                    System.out.println(line);
                     sb.append(line).append("<br>"); //for new line in HTML
                     //sb.append(line).append(separator); //for new line in general
                 }
@@ -122,10 +134,14 @@ public class IndexService {
 
     private void removeCopiedModule(String userToken) {
         try{
-            String windowsDeleteCommand = "cmd /c echo y | rmdir \"" + absolutePath +File.separator+userToken+"\" /s";
-            String linuxDeleteCommand = "/bin/sh rm -r " + absolutePath + File.separator + "module " + absolutePath + File.separator + userToken;
+            String deleteCommand = "";
+            if(isWindows){
+                deleteCommand = "cmd /c echo y | rmdir \"" + absolutePath +File.separator+userToken+"\" /s";
+            }else{
+                deleteCommand = "/bin/sh rm -r " + absolutePath + File.separator + "module " + absolutePath + File.separator + userToken;
+            }
             Runtime r = Runtime.getRuntime();
-            Process p = r.exec(windowsDeleteCommand);
+            Process p = r.exec(deleteCommand);
 
             BufferedReader stdInput = new BufferedReader(new
                     InputStreamReader(p.getInputStream()));
