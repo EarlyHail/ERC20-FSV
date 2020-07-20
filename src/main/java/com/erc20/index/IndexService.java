@@ -18,40 +18,32 @@ public class IndexService {
     private String dir2 = "copyDir2";
     private String dir3 = "copyDir3";
     private String resultDir = "resultDir";
-    private boolean isWindows;
 
-    public String runModule(MultipartHttpServletRequest multi) throws IOException {
+    public String runModule(MultipartHttpServletRequest multi){
         String userToken = UUID.randomUUID().toString();
+        String fileString = "";
+        try{
+            copyModule(userToken);
 
-        if(System.getProperty("os.name").indexOf("Windows") > -1){
-            isWindows = true;
-        }else{
-            isWindows = false;
+            putInputFile(multi, userToken);
+
+            fileString = getOutputFile(userToken);
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }finally{
+            removeCopiedModule(userToken);
         }
-
-        copyModule(userToken);
-
-        putInputFile(multi, userToken);
-
-        String fileString = getOutputFile(userToken);
-
-        removeCopiedModule(userToken);
 
         return fileString.replaceAll("\u001B\\[[;\\d]*m", "");
     }
 
     private void copyModule(String userToken) {
         try {
-            String copyCommand="";
-            if(isWindows){
-                copyCommand = "cmd /c echo d | " +
-                        "xcopy \"" + absolutePath + File.separator + "module\" \"" + absolutePath + File.separator + userToken + "\" /k /h /e";
-            }else{
-                copyCommand = "/bin/sh -c cp " + absolutePath + File.separator + "module " + absolutePath + File.separator + userToken;
-
-            }
+            //String windowCopyCommand = "cmd /c echo d | " + "xcopy \"" + absolutePath + File.separator + "module\" \"" + absolutePath + File.separator + userToken + "\" /k /h /e";
+            String[] linuxCopyCommand = {"/bin/sh", "-c", "cp -r ~/module ~/" + userToken};
             Runtime r = Runtime.getRuntime();
-            Process p = r.exec(copyCommand);
+            Process p = r.exec(linuxCopyCommand);
 
             BufferedReader stdInput = new BufferedReader(new
                     InputStreamReader(p.getInputStream()));
@@ -70,7 +62,7 @@ public class IndexService {
     }
 
     private void putInputFile(MultipartHttpServletRequest multi, String userToken) {
-        String targetPath = absolutePath + File.separator + userToken;
+        String targetPath = System.getProperty("user.home")+File.separator+userToken;
         File dir = new File(targetPath);
 
         String folderPath = "";
@@ -81,10 +73,10 @@ public class IndexService {
             String uploadFile = files.next();
             MultipartFile mFile = multi.getFile(uploadFile);
             fileName = mFile.getOriginalFilename();
-/*            System.out.println("파라미터명" + mFile.getName());
+/*
+            System.out.println("오리지날 파일 이름" + mFile.getOriginalFilename());
             System.out.println("파일크기" + mFile.getSize());
-            System.out.println("파일 존재" + mFile.isEmpty());
-            System.out.println("오리지날 파일 이름" + mFile.getOriginalFilename());*/
+ */
             try {
                 if (i == 0) {
                     folderPath = dir1;
@@ -108,7 +100,8 @@ public class IndexService {
         StringBuilder sb = null;
         String fileString = "";
         try {
-            br = new BufferedReader(new FileReader(absolutePath + File.separator + userToken + File.separator + resultDir + File.separator + "output.txt"));
+            br = new BufferedReader(new FileReader(System.getProperty("user.home")+File.separator + userToken + File.separator + resultDir + File.separator + "output.txt"));
+
             sb = new StringBuilder();
             String line = br.readLine();
             String separator = System.getProperty("line.separator");
@@ -134,14 +127,10 @@ public class IndexService {
 
     private void removeCopiedModule(String userToken) {
         try{
-            String deleteCommand = "";
-            if(isWindows){
-                deleteCommand = "cmd /c echo y | rmdir \"" + absolutePath +File.separator+userToken+"\" /s";
-            }else{
-                deleteCommand = "/bin/sh rm -r " + absolutePath + File.separator + "module " + absolutePath + File.separator + userToken;
-            }
+            String[] linuxDeleteCommand = {"/bin/sh", "-c", "rm -rf ~/" + userToken};
+
             Runtime r = Runtime.getRuntime();
-            Process p = r.exec(deleteCommand);
+            Process p = r.exec(linuxDeleteCommand);
 
             BufferedReader stdInput = new BufferedReader(new
                     InputStreamReader(p.getInputStream()));
