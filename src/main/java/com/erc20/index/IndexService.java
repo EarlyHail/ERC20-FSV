@@ -12,8 +12,6 @@ import java.util.UUID;
 
 @Service
 public class IndexService {
-    private Path currentRelativePath = Paths.get("");
-    private String absolutePath = currentRelativePath.toAbsolutePath().toString();
     private String dir1 = "copyDir1";
     private String dir2 = "copyDir2";
     private String dir3 = "copyDir3";
@@ -63,7 +61,6 @@ public class IndexService {
 
     private void putInputFile(MultipartHttpServletRequest multi, String userToken) {
         String targetPath = System.getProperty("user.home")+File.separator+userToken;
-        File dir = new File(targetPath);
 
         String folderPath = "";
         String fileName = "";
@@ -104,7 +101,7 @@ public class IndexService {
 
             sb = new StringBuilder();
             String line = br.readLine();
-            String separator = System.getProperty("line.separator");
+//            String separator = System.getProperty("line.separator");
             boolean printing = false;
             while (line != null) {
                 if (line.startsWith("\u001B"))
