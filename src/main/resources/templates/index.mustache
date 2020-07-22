@@ -12,36 +12,37 @@
     </style>
 
 </head>
-<body class="bg-light text-center page-padding">
-    <div class="py-5">
-        <h1>ERC20 Functional Specification Verifier</h1>
-    </div>
-    <div class="pb-4">
-        <h4>Some Message will be here</h4>
-        <h4>some day.....................</h4>
-    </div>
-    <div>
-        <form id="file-upload-form" class="md-form py-3">
-            <div class="fileBox pb-2">
-                <label for="file1">Upload</label>
-                <input type="file" id="file1" name="file1">
-                <input class="upload-name1 upload" value="ERC20 Token Solidity Source" readonly><br>
-                <label for="file2">Upload</label>
-                <input type="file" id="file2" name="file2">
-                <input class="upload-name2 upload" value="Target Solidity Source" readonly><br>
-                <label for="file3">Upload</label>
-                <input type="file" id="file3" name="file3">
-                <input class="upload-name3 upload" value="Test Setting" readonly><br>
+<body>
+    <div id="root">
+        <div class="App">
+            <header class="App-header">
+                <h1>ERC20<br>Functional Specification Verifier</h1>
+                <h2>Enter the address of an ERC20 contract to check if it conforms to the standard</h2>
+            </header>
+            <div class="App-body">
+                <form id="file-upload-form">
+                    <div class="fileBox pb-2">
+                        <label for="file1">Upload</label>
+                        <input type="file" id="file1" name="file1">
+                        <input class="upload-name1 upload" value="ERC20 Token Solidity Source" readonly><br>
+                        <label for="file2">Upload</label>
+                        <input type="file" id="file2" name="file2">
+                        <input class="upload-name2 upload" value="Target Solidity Source" readonly><br>
+                        <label for="file3">Upload</label>
+                        <input type="file" id="file3" name="file3">
+                        <input class="upload-name3 upload" value="Test Setting" readonly>
+                        <button type="button" id="btn-file-upload" class="verify-button"> Verify </button>
+                    </div>
+                </form>
+                <pre id="output" type="text/plain" class="text-md-left output"></pre>
+                <p class="App-notes">
+                    The contract source code must be verified on etherscan, and be compiled with Solidity v0.4 or v0.5. This page uses tinchoabbate's slither-scripts to check whether a contract is a valid ERC20 or not using Slither. The script does not verify that the functions found behave as expected. It just checks for matching signatures, return types, existence of custom modifiers, event emissions, among others. These scripts may have bugs, use them at your own risk.
+                </p>
+                <p class="App-notes">
+                    Have any feedback? Share any thoughts in the OpenZeppelin forum.
+                </p>
             </div>
-            <button type="button" id="btn-file-upload" class="btn btn-outline-primary btn-lg mx-2"> Verify </button>
-        </form>
-        <pre id="output" type="text/plain" class="text-md-left output">
-        </pre>
-        <hr>
-        <pre class="output">
-This message will be replaced later
-The contract source code must be verified on etherscan, and be compiled with Solidity v0.4 or v0.5. This page uses tinchoabbate's slither-scripts to check whether a contract is a valid ERC20 or not using Slither. The script does not verify that the functions found behave as expected. It just checks for matching signatures, return types, existence of custom modifiers, event emissions, among others. These scripts may have bugs, use them at your own risk.
-        </pre>
+        </div>
     </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -70,6 +71,7 @@ The contract source code must be verified on etherscan, and be compiled with Sol
             var formData = new FormData(form);
 
             $('#btn-file-upload').text('Verifying...');
+            $('#btn-file-upload').addClass('verifying-button');
             $.ajax({
                 type: 'POST',
                 url: '/',
@@ -78,12 +80,15 @@ The contract source code must be verified on etherscan, and be compiled with Sol
                 contentType: false,
                 success : function(data){
                     $('#output').html(data);
+                    $('#btn-file-upload').text('Verify');
+                    $('#btn-file-upload').removeClass('verifying-button');
                 },
                 error : function(){
                     alert("Communication Failure");
+                    $('#btn-file-upload').text('Verify');
+                    $('#btn-file-upload').removeClass('verifying-button');
                 }
             });
-            $('#btn-file-upload').text('Verify');
         });
         var files = ['#file1', '#file2', '#file3'];
         $.each(files, function(index, fileClass) {

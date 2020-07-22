@@ -20,7 +20,7 @@ public class IndexController {
 
     @ResponseBody
     @RequestMapping(value="/", method= RequestMethod.POST)
-    public String fileUpload(MultipartHttpServletRequest multi, @RequestHeader HttpHeaders headers) throws IOException {
+    public String fileUpload(MultipartHttpServletRequest multi, @RequestHeader HttpHeaders headers){
         String output = indexService.runModule(multi);
         return output;
     }
