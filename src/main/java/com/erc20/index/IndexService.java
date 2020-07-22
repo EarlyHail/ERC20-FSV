@@ -32,7 +32,6 @@ public class IndexService {
         }finally{
             removeCopiedModule(userToken);
         }
-
         return fileString.replaceAll("\u001B\\[[;\\d]*m", "");
     }
 

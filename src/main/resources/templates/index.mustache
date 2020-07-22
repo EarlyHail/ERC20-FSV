@@ -25,13 +25,13 @@
             <div class="fileBox pb-2">
                 <label for="file1">Upload</label>
                 <input type="file" id="file1" name="file1">
-                <input class="upload-name1 upload" value="ERC20 Token Solidity Source"><br>
+                <input class="upload-name1 upload" value="ERC20 Token Solidity Source" readonly><br>
                 <label for="file2">Upload</label>
                 <input type="file" id="file2" name="file2">
-                <input class="upload-name2 upload" value="Target Solidity Source"><br>
+                <input class="upload-name2 upload" value="Target Solidity Source" readonly><br>
                 <label for="file3">Upload</label>
                 <input type="file" id="file3" name="file3">
-                <input class="upload-name3 upload" value="Test Setting"><br>
+                <input class="upload-name3 upload" value="Test Setting" readonly><br>
             </div>
             <button type="button" id="btn-file-upload" class="btn btn-outline-primary btn-lg mx-2"> Verify </button>
         </form>
@@ -52,6 +52,9 @@ The contract source code must be verified on etherscan, and be compiled with Sol
             var fileName1 = $('#file1').val();
             var fileName2 = $('#file2').val();
             var fileName3 = $('#file3').val();
+            console.log(fileName1);
+            console.log(fileName2);
+            console.log(fileName3);
             fileName1 = fileName1.slice(fileName1.indexOf(".") + 1).toLowerCase();
             fileName2 = fileName2.slice(fileName2.indexOf(".") + 1).toLowerCase();
             fileName3 = fileName3.slice(fileName3.indexOf(".") + 1).toLowerCase();
@@ -82,15 +85,13 @@ The contract source code must be verified on etherscan, and be compiled with Sol
             });
             $('#btn-file-upload').text('Verify');
         });
-        var i = 1;
-        $("input[id^='file']").each(function(){
-            $(this).on('change',function(){
-                var fileName = $(this).val();
-                $(".upload-name"+i).val(fileName);
-                i = i+1;
+        var files = ['#file1', '#file2', '#file3'];
+        $.each(files, function(index, fileClass) {
+            $(fileClass).on('change', function () {
+                var cur = $(fileClass).val();
+                $(".upload-name"+fileClass.charAt(fileClass.length-1)).val(cur);
             });
         });
-
     });
 </script>
 
