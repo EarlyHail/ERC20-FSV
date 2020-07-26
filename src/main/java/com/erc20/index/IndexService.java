@@ -81,7 +81,7 @@ public class IndexService {
     private void executeShell(String userToken) throws IOException {
         String homePath = Paths.get(System.getProperty("user.home")).toString();
         try {
-            String[] linuxExecuteCommand = {"/bin/sh", "-c", "sh", "~/runmodule.sh" + userToken};
+            String[] linuxExecuteCommand = {"/bin/sh", "-c", "sh", "~/runmodule.sh", userToken};
             Runtime r = Runtime.getRuntime();
             Process p = r.exec(linuxExecuteCommand);
 
