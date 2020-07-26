@@ -25,6 +25,8 @@ public class IndexService {
 
             putInputFile(multi, userToken);
 
+            executeModule(userToken);
+
             fileString = getOutputFile(userToken);
 
         }catch(IOException e){
@@ -59,8 +61,7 @@ public class IndexService {
     }
 
     private void putInputFile(MultipartHttpServletRequest multi, String userToken) {
-        String targetPath = System.getProperty("user.home")+File.separator+userToken;
-
+        String copiedPath = Paths.get(System.getProperty("user.home"), userToken).toString();
         String folderPath = "";
         String fileName = "";
         Iterator<String> files = multi.getFileNames();
@@ -83,11 +84,34 @@ public class IndexService {
                 if (i == 2) {
                     folderPath = dir3;
                 }
-                mFile.transferTo(new File(targetPath + File.separator + folderPath + File.separator + fileName));
+                mFile.transferTo(new File(Paths.get(copiedPath, folderPath, fileName).toString()));
             } catch (Exception e) {
                 e.printStackTrace();
                 System.err.println("File Upload Error");
             }
+        }
+    }
+
+    private void executeModule(String userToken) throws IOException {
+        String copiedPath = Paths.get(System.getProperty("user.home"), userToken).toString();
+        try {
+            String[] linuxExecuteCommand = {"/bin/sh", "-c", "cp -r ~/module ~/" + userToken};
+            Runtime r = Runtime.getRuntime();
+            Process p = r.exec(linuxExecuteCommand);
+
+            BufferedReader stdInput = new BufferedReader(new
+                    InputStreamReader(p.getInputStream()));
+            BufferedReader stdError = new BufferedReader(new
+                    InputStreamReader(p.getInputStream()));
+            String s = "";
+            while ((s = stdInput.readLine()) != null) {
+//                System.out.println(s);
+            }
+            while ((s = stdError.readLine()) != null) {
+//                System.out.println(s);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -96,8 +120,7 @@ public class IndexService {
         StringBuilder sb = null;
         String fileString = "";
         try {
-            br = new BufferedReader(new FileReader(System.getProperty("user.home")+File.separator + userToken + File.separator + resultDir + File.separator + "output.txt"));
-
+            br = new BufferedReader(new FileReader(Paths.get(System.getProperty("user.home"), userToken, resultDir, "output.txt").toFile()));
             sb = new StringBuilder();
             String line = br.readLine();
 //            String separator = System.getProperty("line.separator");
