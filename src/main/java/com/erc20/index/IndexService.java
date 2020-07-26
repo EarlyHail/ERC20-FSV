@@ -12,12 +12,10 @@ import java.util.UUID;
 
 @Service
 public class IndexService {
-    private Runtime runtime;
 
     public String runModule(MultipartHttpServletRequest multi){
         String userToken = UUID.randomUUID().toString();
         String fileString = "";
-        runtime = Runtime.getRuntime();
         try{
             makeModule(userToken);
 
@@ -25,12 +23,12 @@ public class IndexService {
 
             executeShell(userToken);
 
-//            fileString = getOutputFile(userToken);
+            fileString = getOutputFile(userToken);
 
         }catch(Exception e){
             e.printStackTrace();
         }finally{
-//            removeCopiedModule(userToken);
+            removeCopiedModule(userToken);
         }
         return fileString.replaceAll("\u001B\\[[;\\d]*m", "");
     }
@@ -38,6 +36,7 @@ public class IndexService {
     private void makeModule(String userToken) {
         try {
             String[] linuxCopyCommand = {"/bin/sh", "-c", "mkdir ~/" + userToken};
+            Runtime runtime = Runtime.getRuntime();
             Process p = runtime.exec(linuxCopyCommand);
 
             BufferedReader stdInput = new BufferedReader(new
@@ -78,24 +77,24 @@ public class IndexService {
         }
     }
 
-    private void executeShell(String userToken) throws IOException {
+    private void executeShell(String userToken) {
         String homePath = Paths.get(System.getProperty("user.home")).toString();
         try {
-            String[] linuxExecuteCommand = {"/bin/sh", "-c", "sh", "~/runmodule.sh", userToken};
-            Process p = runtime.exec(linuxExecuteCommand);
-
-            BufferedReader stdInput = new BufferedReader(new
-                    InputStreamReader(p.getInputStream()));
-            BufferedReader stdError = new BufferedReader(new
-                    InputStreamReader(p.getInputStream()));
-            String s = "";
-            while ((s = stdInput.readLine()) != null) {
-                System.out.println(s);
-            }
-            while ((s = stdError.readLine()) != null) {
-                System.out.println(s);
+            System.out.println("start shell");
+            String[] linuxExecuteCommand = { "sh", "/home/ec2-user/runmodule.sh", userToken};
+            Runtime runtime = Runtime.getRuntime();
+            Process    p = Runtime.getRuntime().exec(linuxExecuteCommand);
+            p.waitFor();
+            BufferedReader reader=new BufferedReader(new InputStreamReader(
+                    p.getInputStream()));
+            String line;
+            System.out.println("end shell");
+            while((line = reader.readLine()) != null) {
+                System.out.println(line);
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -114,7 +113,7 @@ public class IndexService {
                 if (line.startsWith("\u001B"))
                     printing = true;
                 if (printing) {
-//                    System.out.println(line);
+                    System.out.println(line);
                     sb.append(line).append("<br>"); //for new line in HTML
                     //sb.append(line).append(separator); //for new line in general
                 }
@@ -131,7 +130,7 @@ public class IndexService {
 
     private void removeCopiedModule(String userToken) {
         try{
-            String[] linuxDeleteCommand = {"/bin/sh", "-c", "rm -rf ~/" + userToken};
+            String[] linuxDeleteCommand = {"/bin/sh", "-c", "rm -r ~/" + userToken};
 
             Runtime r = Runtime.getRuntime();
             Process p = r.exec(linuxDeleteCommand);

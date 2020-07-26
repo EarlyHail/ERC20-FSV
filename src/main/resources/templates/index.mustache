@@ -59,13 +59,16 @@
             fileName1 = fileName1.slice(fileName1.indexOf(".") + 1).toLowerCase();
             fileName2 = fileName2.slice(fileName2.indexOf(".") + 1).toLowerCase();
             fileName3 = fileName3.slice(fileName3.indexOf(".") + 1).toLowerCase();
-            var extension = "txt"
-            if (fileName1 != extension || fileName2 != extension || fileName3 != extension) {
-                alert("File Extension must be txt");
-                $("#imagefile").val("");
+            var extension = "sol"
+            if (fileName1 != extension || fileName2 != extension) {
+                alert("File Extension must be .sol");
                 return;
             }
-
+            extension = "js"
+            if(fileName3 != extension){
+                alert("File Extension must be .js");
+                return;
+            }
             console.log("file extension ended");
             var form = $('#file-upload-form')[0];
             var formData = new FormData(form);
