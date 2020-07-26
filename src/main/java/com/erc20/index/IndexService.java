@@ -80,7 +80,6 @@ public class IndexService {
     private void executeShell(String userToken) {
         String homePath = Paths.get(System.getProperty("user.home")).toString();
         try {
-            System.out.println("start shell");
             String[] linuxExecuteCommand = { "sh", "/home/ec2-user/runmodule.sh", userToken};
             Runtime runtime = Runtime.getRuntime();
             Process    p = Runtime.getRuntime().exec(linuxExecuteCommand);
@@ -88,7 +87,6 @@ public class IndexService {
             BufferedReader reader=new BufferedReader(new InputStreamReader(
                     p.getInputStream()));
             String line;
-            System.out.println("end shell");
             while((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
@@ -113,7 +111,7 @@ public class IndexService {
                 if (line.startsWith("\u001B"))
                     printing = true;
                 if (printing) {
-                    System.out.println(line);
+//                    System.out.println(line);
                     sb.append(line).append("<br>"); //for new line in HTML
                     //sb.append(line).append(separator); //for new line in general
                 }
