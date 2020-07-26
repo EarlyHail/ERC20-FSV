@@ -37,7 +37,7 @@ public class IndexService {
 
     private void makeModule(String userToken) {
         try {
-            String[] linuxCopyCommand = {"/bin/sh", "-c", "mkdir ~/module" + userToken};
+            String[] linuxCopyCommand = {"/bin/sh", "-c", "mkdir ~/" + userToken};
             Process p = runtime.exec(linuxCopyCommand);
 
             BufferedReader stdInput = new BufferedReader(new
