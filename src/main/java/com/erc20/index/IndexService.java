@@ -82,8 +82,7 @@ public class IndexService {
         String homePath = Paths.get(System.getProperty("user.home")).toString();
         try {
             String[] linuxExecuteCommand = {"/bin/sh", "-c", "sh", "~/runmodule.sh", userToken};
-            Runtime r = Runtime.getRuntime();
-            Process p = r.exec(linuxExecuteCommand);
+            Process p = runtime.exec(linuxExecuteCommand);
 
             BufferedReader stdInput = new BufferedReader(new
                     InputStreamReader(p.getInputStream()));
