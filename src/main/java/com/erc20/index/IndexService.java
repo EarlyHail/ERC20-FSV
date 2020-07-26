@@ -12,37 +12,33 @@ import java.util.UUID;
 
 @Service
 public class IndexService {
-    private String dir1 = "copyDir1";
-    private String dir2 = "copyDir2";
-    private String dir3 = "copyDir3";
-    private String resultDir = "resultDir";
+    private Runtime runtime;
 
     public String runModule(MultipartHttpServletRequest multi){
         String userToken = UUID.randomUUID().toString();
         String fileString = "";
+        runtime = Runtime.getRuntime();
         try{
-            copyModule(userToken);
+            makeModule(userToken);
 
             putInputFile(multi, userToken);
 
-            executeModule(userToken);
+            executeShell(userToken);
 
-            fileString = getOutputFile(userToken);
+//            fileString = getOutputFile(userToken);
 
-        }catch(IOException e){
+        }catch(Exception e){
             e.printStackTrace();
         }finally{
-            removeCopiedModule(userToken);
+//            removeCopiedModule(userToken);
         }
         return fileString.replaceAll("\u001B\\[[;\\d]*m", "");
     }
 
-    private void copyModule(String userToken) {
+    private void makeModule(String userToken) {
         try {
-            //String windowCopyCommand = "cmd /c echo d | " + "xcopy \"" + absolutePath + File.separator + "module\" \"" + absolutePath + File.separator + userToken + "\" /k /h /e";
-            String[] linuxCopyCommand = {"/bin/sh", "-c", "cp -r ~/module ~/" + userToken};
-            Runtime r = Runtime.getRuntime();
-            Process p = r.exec(linuxCopyCommand);
+            String[] linuxCopyCommand = {"/bin/sh", "-c", "mkdir ~/module" + userToken};
+            Process p = runtime.exec(linuxCopyCommand);
 
             BufferedReader stdInput = new BufferedReader(new
                     InputStreamReader(p.getInputStream()));
@@ -62,7 +58,6 @@ public class IndexService {
 
     private void putInputFile(MultipartHttpServletRequest multi, String userToken) {
         String copiedPath = Paths.get(System.getProperty("user.home"), userToken).toString();
-        String folderPath = "";
         String fileName = "";
         Iterator<String> files = multi.getFileNames();
 
@@ -75,16 +70,7 @@ public class IndexService {
             System.out.println("파일크기" + mFile.getSize());
  */
             try {
-                if (i == 0) {
-                    folderPath = dir1;
-                }
-                if (i == 1) {
-                    folderPath = dir2;
-                }
-                if (i == 2) {
-                    folderPath = dir3;
-                }
-                mFile.transferTo(new File(Paths.get(copiedPath, folderPath, fileName).toString()));
+                mFile.transferTo(new File(Paths.get(copiedPath, fileName).toString()));
             } catch (Exception e) {
                 e.printStackTrace();
                 System.err.println("File Upload Error");
@@ -92,10 +78,10 @@ public class IndexService {
         }
     }
 
-    private void executeModule(String userToken) throws IOException {
-        String copiedPath = Paths.get(System.getProperty("user.home"), userToken).toString();
+    private void executeShell(String userToken) throws IOException {
+        String homePath = Paths.get(System.getProperty("user.home")).toString();
         try {
-            String[] linuxExecuteCommand = {"/bin/sh", "-c", "cp -r ~/module ~/" + userToken};
+            String[] linuxExecuteCommand = {"/bin/sh", "-c", "sh", "~/runmodule.sh" + userToken};
             Runtime r = Runtime.getRuntime();
             Process p = r.exec(linuxExecuteCommand);
 
@@ -105,10 +91,10 @@ public class IndexService {
                     InputStreamReader(p.getInputStream()));
             String s = "";
             while ((s = stdInput.readLine()) != null) {
-//                System.out.println(s);
+                System.out.println(s);
             }
             while ((s = stdError.readLine()) != null) {
-//                System.out.println(s);
+                System.out.println(s);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -120,7 +106,7 @@ public class IndexService {
         StringBuilder sb = null;
         String fileString = "";
         try {
-            br = new BufferedReader(new FileReader(Paths.get(System.getProperty("user.home"), userToken, resultDir, "output.txt").toFile()));
+            br = new BufferedReader(new FileReader(Paths.get(System.getProperty("user.home"), userToken, "module", "output.txt").toFile()));
             sb = new StringBuilder();
             String line = br.readLine();
 //            String separator = System.getProperty("line.separator");
