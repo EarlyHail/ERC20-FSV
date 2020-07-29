@@ -106,7 +106,7 @@ public class IndexService {
             sb = new StringBuilder();
             String line = br.readLine();
 //            String separator = System.getProperty("line.separator");
-            boolean printing = false;
+            boolean printing = true;
             while (line != null) {
                 if (line.startsWith("\u001B"))
                     printing = true;
