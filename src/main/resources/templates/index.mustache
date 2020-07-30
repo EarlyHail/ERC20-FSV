@@ -17,9 +17,18 @@
         <div class="App">
             <header class="App-header">
                 <h1>ERC20 Functional Verifier</h1>
-                <h2>Enter the address of an ERC20 contract to check if it conforms to the standard</h2>
+                <h2>Upload an ERC20 contract (YourContract.sol)<br>
+                    with a target wrapper (Target.sol)<br>
+                    and a test setup (initialize.js)<br>
+                    if the ERC20 contract conforms to a functional specification for ERC 20.</h2>
             </header>
             <div class="App-body">
+                <div class="App-sample">
+                    [Sample]&nbsp;
+                      <a href = "https://github.com/moonhyeonah/Erc20FunctionalVerifier/blob/master/top100tokens/LINK/LINK.sol" target="_blank">LINK.sol</a>&nbsp;&nbsp;
+                      <a href = "https://github.com/moonhyeonah/Erc20FunctionalVerifier/blob/master/top100tokens/LINK/Target.sol" target="_blank">Target.sol</a>&nbsp;&nbsp;
+                      <a href = "https://github.com/moonhyeonah/Erc20FunctionalVerifier/blob/master/top100tokens/LINK/initialize.js" target="_blank">initialize.js</a>
+                </div>
                 <form id="file-upload-form">
                     <div class="fileBox pb-2">
                         <label for="file1">Upload</label>
@@ -36,10 +45,13 @@
                 </form>
                 <pre id="output" type="text/plain" class="text-md-left output"></pre>
                 <p class="App-notes">
-                    The contract source code must be verified on etherscan, and be compiled with Solidity v0.4 or v0.5. This page uses tinchoabbate's slither-scripts to check whether a contract is a valid ERC20 or not using Slither. The script does not verify that the functions found behave as expected. It just checks for matching signatures, return types, existence of custom modifiers, event emissions, among others. These scripts may have bugs, use them at your own risk.
+                    The contract source code must be verified on etherscan, and be compiled with its own version of
+                    Solidity. This page uses a test suite implementation of the functional specification for ERC 20 using Truffle.
+                    It verifies the functional behavior of ERC 20 APIs, such as transfer, transferFrom, and approve.
+                    The development of this page is inspired by the web site for the <a href = "https://erc20-verifier.openzeppelin.com" target="_blank">ERC20 Verifier</a>
                 </p>
                 <p class="App-notes">
-                    Have any feedback? Share any thoughts in the OpenZeppelin forum.
+                    Have any feedback? Share any thoughts in the <a href = "https://github.com/moonhyeonah/Erc20FunctionalVerifier" target="_blank">GitHub web site</a>
                 </p>
             </div>
         </div>
