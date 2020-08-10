@@ -38,7 +38,8 @@ public class IndexService {
             String[] linuxCopyCommand = {"/bin/sh", "-c", "mkdir ~/" + userToken};
             Runtime runtime = Runtime.getRuntime();
             Process p = runtime.exec(linuxCopyCommand);
-        } catch (IOException e) {
+            p.waitFor();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -70,14 +71,8 @@ public class IndexService {
         try {
             String[] linuxExecuteCommand = { "sh", "/home/ec2-user/runmodule.sh", userToken};
             Runtime runtime = Runtime.getRuntime();
-            Process    p = Runtime.getRuntime().exec(linuxExecuteCommand);
+            Process p = Runtime.getRuntime().exec(linuxExecuteCommand);
             p.waitFor();
-            BufferedReader reader=new BufferedReader(new InputStreamReader(
-                    p.getInputStream()));
-            String line;
-            while((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -124,7 +119,8 @@ public class IndexService {
 
             Runtime r = Runtime.getRuntime();
             Process p = r.exec(linuxDeleteCommand);
-        }catch(IOException e){
+            p.waitFor();
+        }catch(Exception e){
             e.printStackTrace();
         }
     }
