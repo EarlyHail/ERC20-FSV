@@ -10,7 +10,6 @@
             max-width:100%;
         }
     </style>
-
 </head>
 <body>
     <div id="root">
@@ -43,7 +42,7 @@
                         <button type="button" id="btn-file-upload" class="verify-button"> Verify </button>
                     </div>
                 </form>
-                <pre id="output" type="text/plain" class="text-md-left output"></pre>
+                <pre id="output" type="text/plain"></pre>
                 <p class="App-notes">
                     The contract source code must be verified on etherscan, and be compiled with its own version of
                     Solidity. This page uses a test suite implementation of the functional specification for ERC 20 using Truffle.
@@ -61,7 +60,6 @@
 <script>
     $(document).ready(function(){
         $('#btn-file-upload').on('click', function() {
-
             var fileName1 = $('#file1').val();
             var fileName2 = $('#file2').val();
             var fileName3 = $('#file3').val();
@@ -78,7 +76,6 @@
                 alert("File Extension must be .js");
                 return;
             }
-            console.log("file extension ended");
             var form = $('#file-upload-form')[0];
             var formData = new FormData(form);
 

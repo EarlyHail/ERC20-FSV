@@ -38,18 +38,6 @@ public class IndexService {
             String[] linuxCopyCommand = {"/bin/sh", "-c", "mkdir ~/" + userToken};
             Runtime runtime = Runtime.getRuntime();
             Process p = runtime.exec(linuxCopyCommand);
-
-            BufferedReader stdInput = new BufferedReader(new
-                    InputStreamReader(p.getInputStream()));
-            BufferedReader stdError = new BufferedReader(new
-                    InputStreamReader(p.getInputStream()));
-            String s = "";
-            while ((s = stdInput.readLine()) != null) {
-//                System.out.println(s);
-            }
-            while ((s = stdError.readLine()) != null) {
-//                System.out.println(s);
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -108,8 +96,12 @@ public class IndexService {
 //            String separator = System.getProperty("line.separator");
             boolean printing = true;
             while (line != null) {
-                if (line.startsWith("\u001B"))
+                if (line.contains("Compilation warnings encountered")){
+                    printing = false;
+                }
+                if (line.startsWith("\u001B")){
                     printing = true;
+                }
                 if (printing) {
 //                    System.out.println(line);
                     sb.append(line).append("<br>"); //for new line in HTML
@@ -132,18 +124,6 @@ public class IndexService {
 
             Runtime r = Runtime.getRuntime();
             Process p = r.exec(linuxDeleteCommand);
-
-            BufferedReader stdInput = new BufferedReader(new
-                    InputStreamReader(p.getInputStream()));
-            BufferedReader stdError = new BufferedReader(new
-                    InputStreamReader(p.getInputStream()));
-            String s = "";
-            while((s = stdInput.readLine()) != null){
-//                System.out.println(s);
-            }
-            while((s = stdError.readLine()) != null){
-//                System.out.println(s);
-            }
         }catch(IOException e){
             e.printStackTrace();
         }
