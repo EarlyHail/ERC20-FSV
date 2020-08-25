@@ -18,11 +18,8 @@ public class IndexService {
         String fileString = "";
         try{
             makeModule(userToken);
-
             putInputFile(multi, userToken);
-
             executeShell(userToken);
-
             fileString = getOutputFile(userToken);
 
         }catch(Exception e){
@@ -69,7 +66,7 @@ public class IndexService {
     private void executeShell(String userToken) {
         String homePath = Paths.get(System.getProperty("user.home")).toString();
         try {
-            String[] linuxExecuteCommand = { "sh", "/home/ec2-user/runmodule.sh", userToken};
+            String[] linuxExecuteCommand = { "sh", "~/runmodule.sh", userToken};
             Runtime runtime = Runtime.getRuntime();
             Process p = Runtime.getRuntime().exec(linuxExecuteCommand);
             p.waitFor();
