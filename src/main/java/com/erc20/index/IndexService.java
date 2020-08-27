@@ -66,7 +66,7 @@ public class IndexService {
     private void executeShell(String userToken) {
         String homePath = Paths.get(System.getProperty("user.home")).toString();
         try {
-            String[] linuxExecuteCommand = { "sh", "~/runmodule.sh", userToken};
+            String[] linuxExecuteCommand = {"/bin/bash", "-c", "sh "+homePath+"/runmodule.sh "+ userToken+ " | tee "+homePath+"/"+userToken+"/output.txt"};
             Runtime runtime = Runtime.getRuntime();
             Process p = Runtime.getRuntime().exec(linuxExecuteCommand);
             p.waitFor();
@@ -82,12 +82,15 @@ public class IndexService {
         StringBuilder sb = null;
         String fileString = "";
         try {
-            br = new BufferedReader(new FileReader(Paths.get(System.getProperty("user.home"), userToken, "module", "output.txt").toFile()));
+            br = new BufferedReader(new FileReader(Paths.get(System.getProperty("user.home"), userToken, "output.txt").toFile()));
             sb = new StringBuilder();
             String line = br.readLine();
 //            String separator = System.getProperty("line.separator");
-            boolean printing = true;
+            boolean printing = false;
             while (line != null) {
+                if (line.contains("Compiling your contracts")){
+                    printing = true;
+                }
                 if (line.contains("Compilation warnings encountered")){
                     printing = false;
                 }
