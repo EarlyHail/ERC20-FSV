@@ -5,7 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.*;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.UUID;
@@ -82,8 +81,8 @@ public class IndexService {
         StringBuilder sb = null;
         String fileString = "";
         try {
-            br = new BufferedReader(new FileReader(Paths.get(System.getProperty("user.home"), userToken, "output.txt").toFile()));
-            sb = new StringBuilder();
+//            br = new BufferedReader(new FileReader(Paths.get(System.getProperty("user.home"), userToken, "output.txt").toFile(), StandardCharsets.UTF_8));
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(Paths.get(System.getProperty("user.home"), userToken, "output.txt").toFile()), "UTF-8"));            sb = new StringBuilder();
             String line = br.readLine();
 //            String separator = System.getProperty("line.separator");
             boolean printing = false;
