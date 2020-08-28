@@ -90,9 +90,6 @@ public class IndexService {
                 if (line.contains("Compiling your contracts")){
                     printing = true;
                 }
-                if (line.contains("Compilation warnings encountered")){
-                    printing = false;
-                }
                 if (line.startsWith("\u001B")){
                     printing = true;
                 }
