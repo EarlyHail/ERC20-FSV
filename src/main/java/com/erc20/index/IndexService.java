@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.UUID;
@@ -17,8 +18,11 @@ public class IndexService {
         String fileString = "";
         try{
             makeModule(userToken);
+
             putInputFile(multi, userToken);
+
             executeShell(userToken);
+
             fileString = getOutputFile(userToken);
 
         }catch(Exception e){
@@ -65,7 +69,7 @@ public class IndexService {
     private void executeShell(String userToken) {
         String homePath = Paths.get(System.getProperty("user.home")).toString();
         try {
-            String[] linuxExecuteCommand = {"/bin/bash", "-c", "sh "+homePath+"/runmodule.sh "+ userToken+ " | tee "+homePath+"/"+userToken+"/output.txt"};
+            String[] linuxExecuteCommand = { "sh", "/home/ec2-user/runmodule.sh", userToken};
             Runtime runtime = Runtime.getRuntime();
             Process p = Runtime.getRuntime().exec(linuxExecuteCommand);
             p.waitFor();
@@ -81,14 +85,14 @@ public class IndexService {
         StringBuilder sb = null;
         String fileString = "";
         try {
-//            br = new BufferedReader(new FileReader(Paths.get(System.getProperty("user.home"), userToken, "output.txt").toFile(), StandardCharsets.UTF_8));
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(Paths.get(System.getProperty("user.home"), userToken, "output.txt").toFile()), "UTF-8"));            sb = new StringBuilder();
+            br = new BufferedReader(new FileReader(Paths.get(System.getProperty("user.home"), userToken, "module", "output.txt").toFile()));
+            sb = new StringBuilder();
             String line = br.readLine();
 //            String separator = System.getProperty("line.separator");
-            boolean printing = false;
+            boolean printing = true;
             while (line != null) {
-                if (line.contains("Compiling your contracts")){
-                    printing = true;
+                if (line.contains("Compilation warnings encountered")){
+                    printing = false;
                 }
                 if (line.startsWith("\u001B")){
                     printing = true;

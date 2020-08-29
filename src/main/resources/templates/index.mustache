@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>ERC20 Functional Verifier</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="/ERC20FunctionalVerifier/css/app/basic.css"/>
+    <link rel="stylesheet" href="/css/app/basic.css"/>
     <style>
         .container{
             max-width:100%;
@@ -19,7 +19,7 @@
                 <h2>Upload an ERC20 contract (YourContract.sol)<br>
                     with a target wrapper (Target.sol)<br>
                     and a test setup (initialize.js)<br>
-                    to verify if the contract conforms to the ERC20 functional specification.</h2>
+                    if the ERC20 contract conforms to a functional specification for ERC 20.</h2>
             </header>
             <div class="App-body">
                 <div class="App-sample">
@@ -83,7 +83,7 @@
             $('#btn-file-upload').addClass('verifying-button');
             $.ajax({
                 type: 'POST',
-                url: '/ERC20FunctionalVerifier/',
+                url: '/',
                 data: formData,
                 processData: false,
                 contentType: false,
