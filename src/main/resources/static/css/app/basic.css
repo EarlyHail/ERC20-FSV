@@ -122,19 +122,35 @@ h2 {
     opacity: .9;
 }
 /*------- Example Lists -------*/
-.example-container {
+.example-background{
+    display: none;
+    justify-content: center;
     position: absolute;
-    overflow-y: scroll;
-    scroll-margin-top: 60px;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.22);
+}
+.example-container{
+    position: absolute;
+    /*overflow-y: scroll;*/
+    /*scroll-margin-top: 60px;*/
     background-color: white;
     top: 0;
     height: 100%;
     right: -350px;
     width: 350px;
+
+    opacity:0;
+    overflow: hidden;
+    transition: .3s ease;
 }
 .reveal {
     right: 0;
-    transition: 0.3s;
+    opacity: 1;
+    /*transition: 0.3s;*/
 }
 .hide {
     right: -350px;

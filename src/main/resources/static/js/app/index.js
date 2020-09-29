@@ -80,6 +80,8 @@ const startExampleBtn = () => {
         }else{
             const examples = await getLists();
             await renderExamples(examples);
+            const exampleBackground = document.querySelector(".example-background");
+            exampleBackground.style.display = "block";
             exampleContainer.classList.add("reveal");
         }
     });
