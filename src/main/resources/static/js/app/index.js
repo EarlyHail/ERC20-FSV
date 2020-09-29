@@ -44,7 +44,7 @@ const startInputValidation = () => {
         const elFileInput = document.getElementById(fileInput)
         elFileInput.addEventListener("change", () => {
             const name = elFileInput.value;
-            const elUploadFile = document.querySelector(`.upload-name${index+1}`)
+            const elUploadFile = $(`.upload-name${index+1}`)
             elUploadFile.value = name;
         })
     });
@@ -68,36 +68,36 @@ const getExampleHTML = (text) => {
     return `<section class="example-card">${text}</section>`;
 }
 const renderExamples = (examples) => {
-    const exampleContent = document.querySelector(".example-content");
+    const exampleContent = $(".example-content");
     examples.forEach(example => {
         exampleContent.insertAdjacentHTML("beforeend", getExampleHTML(example));
     })
 }
 const closeExampleSidebar = () => {
-    const exampleContainer = document.querySelector(".example-container");
+    const exampleContainer = $(".example-container");
     exampleContainer.classList.add("hide");
-    const exampleBackground = document.querySelector(".example-background");
+    const exampleBackground = $(".example-background");
     setTimeout(() => {
         exampleBackground.classList.remove("display-flex");
     },500)
 }
 const startExampleBtn = () => {
-    document.querySelector(".example-btn").addEventListener("click", async () => {
-        const exampleContainer = document.querySelector(".example-container");
-        const exampleContent = document.querySelector(".example-content");
+    $(".example-btn").addEventListener("click", async () => {
+        const exampleContainer = $(".example-container");
+        const exampleContent = $(".example-content");
         if(!!!exampleContent.children.length){
             const examples = await getLists();
             await renderExamples(examples);
         }
-        const exampleBackground = document.querySelector(".example-background");
+        const exampleBackground = $(".example-background");
         exampleBackground.classList.add("display-flex");
         setTimeout(() => {
             exampleContainer.classList.remove("hide");
             exampleContainer.classList.add("reveal");
         },100)
     });
-    document.querySelector(".example-close-btn").addEventListener("click", closeExampleSidebar)
-    document.querySelector(".example-background").addEventListener("click", ({target}) => {
+    $(".example-close-btn").addEventListener("click", closeExampleSidebar)
+    $(".example-background").addEventListener("click", ({target}) => {
         if(!!!target.classList.contains("example-background")) return;
         closeExampleSidebar();
     })
@@ -105,7 +105,7 @@ const startExampleBtn = () => {
 }
 
 const changeExampleLink = (tokenName) => {
-    const [token, target, init] = [...document.querySelectorAll(".example-link")];
+    const [token, target, init] = [...$(".example-link")];
     const linkTemplate = "https://github.com/moonhyeonah/Erc20FunctionalVerifier/blob/master/top100tokens"
     token.innerHTML = `${tokenName}.sol`;
     token.href = `${linkTemplate}/${tokenName}/${tokenName}.sol`
