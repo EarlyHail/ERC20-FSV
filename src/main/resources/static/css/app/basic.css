@@ -134,11 +134,11 @@ h2 {
 }
 .reveal {
     right: 0;
-    transition: 0.5s;
+    transition: 0.3s;
 }
 .hide {
     right: -350px;
-    transition: 0.5s;
+    transition: 0.3s;
 }
 .example-header{
     display: flex;

@@ -73,10 +73,19 @@ const renderExamples = (examples) => {
 }
 const startExampleBtn = () => {
     document.querySelector(".example-btn").addEventListener("click", async () => {
-        const examples = await getLists();
-        await renderExamples(examples);
         const exampleContainer = document.querySelector(".example-container");
-        exampleContainer.classList.add("reveal");
+        const exampleContent = document.querySelector(".example-content");
+        if(!!exampleContent.children.length){
+            exampleContainer.classList.remove("hide");
+        }else{
+            const examples = await getLists();
+            await renderExamples(examples);
+            exampleContainer.classList.add("reveal");
+        }
     });
+    document.querySelector(".example-close-btn").addEventListener("click", () => {
+        const exampleContainer = document.querySelector(".example-container");
+        exampleContainer.classList.add("hide");
+    })
 }
 startExampleBtn();
