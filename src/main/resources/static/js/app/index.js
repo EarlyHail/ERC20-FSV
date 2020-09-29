@@ -1,8 +1,28 @@
-$(document).ready(function(){
-    $('#btn-file-upload').on('click', function() {
-        const fileName1 = $('#file1').val().split(".")[1].toLowerCase();
-        const fileName2 = $('#file2').val().split(".")[1].toLowerCase();
-        const fileName3 = $('#file3').val().split(".")[1].toLowerCase();
+const requestTest =  (formData) => {
+    fetch("/", {
+        method: "POST",
+        body: formData,
+    })
+        .then((response) => {
+            return response.text();
+        })
+        .then((result) => {
+            $('#output').innerHTML = result;
+            $('#btn-file-upload').text = 'Verify';
+            $('#btn-file-upload').classList.remove('verifying-button');
+        })
+        .catch(() => {
+            $('#btn-file-upload').text('Verify');
+            $('#btn-file-upload').classList.remove('verifying-button');
+            alert("try again!!!");
+        });
+}
+
+const startInputValidation = () => {
+    $('#btn-file-upload').addEventListener('click', () => {
+        const fileName1 = $('#file1').value.split(".")[1].toLowerCase();
+        const fileName2 = $('#file2').value.split(".")[1].toLowerCase();
+        const fileName3 = $('#file3').value.split(".")[1].toLowerCase();
         let extension = "sol"
         if (fileName1 != extension || fileName2 != extension) {
             alert("File Extension must be .sol");
@@ -13,37 +33,23 @@ $(document).ready(function(){
             alert("File Extension must be .js");
             return;
         }
-        const form = $('#file-upload-form')[0];
+        const form = $('#file-upload-form');
         const formData = new FormData(form);
+        $('#btn-file-upload').textContent = 'Verifying...';
+        $('#btn-file-upload').classList.add('verifying-button');
+        requestTest(formData);
+    });
+    const files = ['file1', 'file2', 'file3'];
+    files.forEach((fileInput, index) => {
+        const elFileInput = document.getElementById(fileInput)
+        elFileInput.addEventListener("change", () => {
+            const name = elFileInput.value;
+            const elUploadFile = document.querySelector(`.upload-name${index+1}`)
+            elUploadFile.value = name;
+        })
+    });
+}
 
-        $('#btn-file-upload').text('Verifying...');
-        $('#btn-file-upload').addClass('verifying-button');
-        $.ajax({
-            type: 'POST',
-            url: '/',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success : function(data){
-                $('#output').html(data);
-                $('#btn-file-upload').text('Verify');
-                $('#btn-file-upload').removeClass('verifying-button');
-            },
-            error : function(){
-                alert("Communication Failure");
-                $('#btn-file-upload').text('Verify');
-                $('#btn-file-upload').removeClass('verifying-button');
-            }
-        });
-    });
-    const files = ['#file1', '#file2', '#file3'];
-    $.each(files, function(index, fileClass) {
-        $(fileClass).on('change', function () {
-            const cur = $(fileClass).val();
-            $(".upload-name"+fileClass.charAt(fileClass.length-1)).val(cur);
-        });
-    });
-});
 const getLists = async () => {
     return fetch("/examples", {
         method: "GET",
@@ -114,5 +120,6 @@ const startChangeExample = () => {
     })
 }
 
+startInputValidation();
 startExampleBtn();
 startChangeExample();

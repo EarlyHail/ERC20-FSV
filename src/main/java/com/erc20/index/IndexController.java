@@ -20,8 +20,9 @@ public class IndexController {
     @ResponseBody
     @RequestMapping(value="/", method= RequestMethod.POST)
     public String fileUpload(MultipartHttpServletRequest multi){
+        System.out.println("-----------");
         String output = indexService.runModule(multi);
-        return output;
+        return "Hello this is result";
     }
 
     @ResponseBody

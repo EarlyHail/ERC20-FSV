@@ -34,18 +34,18 @@ public class IndexService {
         String userToken = UUID.randomUUID().toString();
         String fileString = "";
         try{
-            makeModule(userToken);
+//            makeModule(userToken);
 
             putInputFile(multi, userToken);
 
-            executeShell(userToken);
+//            executeShell(userToken);
 
-            fileString = getOutputFile(userToken);
+//            fileString = getOutputFile(userToken);
 
         }catch(Exception e){
             e.printStackTrace();
         }finally{
-            removeCopiedModule(userToken);
+//            removeCopiedModule(userToken);
         }
         return fileString.replaceAll("\u001B\\[[;\\d]*m", "");
     }
@@ -70,12 +70,13 @@ public class IndexService {
             String uploadFile = files.next();
             MultipartFile mFile = multi.getFile(uploadFile);
             fileName = mFile.getOriginalFilename();
-/*
+            System.out.println(fileName);
+            /*
             System.out.println("오리지날 파일 이름" + mFile.getOriginalFilename());
             System.out.println("파일크기" + mFile.getSize());
  */
             try {
-                mFile.transferTo(new File(Paths.get(copiedPath, fileName).toString()));
+//                mFile.transferTo(new File(Paths.get(copiedPath, fileName).toString()));
             } catch (Exception e) {
                 e.printStackTrace();
                 System.err.println("File Upload Error");
