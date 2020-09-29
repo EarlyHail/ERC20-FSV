@@ -160,7 +160,7 @@ const startExampleBtn = () => {
 }
 
 const changeExampleLink = (tokenName) => {
-    const [token, target, init] = [...$(".example-link")];
+    const [token, target, init] = [...$$(".example-link")];
     const linkTemplate = "https://github.com/moonhyeonah/Erc20FunctionalVerifier/blob/master/top100tokens"
     token.innerHTML = `${tokenName}.sol`;
     token.href = `${linkTemplate}/${tokenName}/${tokenName}.sol`

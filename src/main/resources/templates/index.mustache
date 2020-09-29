@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>ERC20 Functional Verifier</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/app/basic.css"/>
     <style>
         .container{
@@ -23,14 +22,13 @@
             </header>
             <div class="App-body">
                 <div class="App-sample">
-                    [Sample]&nbsp;
-                      <a href = "https://github.com/moonhyeonah/Erc20FunctionalVerifier/blob/master/top100tokens/LINK/LINK.sol" class="example-link first-link" target="_blank">LINK.sol</a>&nbsp;&nbsp;
-                      <a href = "https://github.com/moonhyeonah/Erc20FunctionalVerifier/blob/master/top100tokens/LINK/Target.sol" class="example-link second-link" target="_blank">Target.sol</a>&nbsp;&nbsp;
-                      <a href = "https://github.com/moonhyeonah/Erc20FunctionalVerifier/blob/master/top100tokens/LINK/initialize.js" class="example-link third-link" target="_blank">initialize.js</a>
-                    <div>
-                        <input type="button" class="example-btn" value="show Examples">
-                        <input type="button" class="apply-example-btn" value="add Example">
+                    <div class="sample-link">
+                        [Sample]&nbsp;
+                        <a href = "https://github.com/moonhyeonah/Erc20FunctionalVerifier/blob/master/top100tokens/LINK/LINK.sol" class="example-link first-link" target="_blank">LINK.sol</a>&nbsp;&nbsp;
+                        <a href = "https://github.com/moonhyeonah/Erc20FunctionalVerifier/blob/master/top100tokens/LINK/Target.sol" class="example-link second-link" target="_blank">Target.sol</a>&nbsp;&nbsp;
+                        <a href = "https://github.com/moonhyeonah/Erc20FunctionalVerifier/blob/master/top100tokens/LINK/initialize.js" class="example-link third-link" target="_blank">initialize.js</a>
                     </div>
+                    <input type="button" class="btn example-btn" value="show Examples">
                 </div>
                 <form id="file-upload-form">
                     <div class="fileBox pb-2">
@@ -43,10 +41,13 @@
                         <label for="file3">Upload</label>
                         <input type="file" id="file3" name="file3">
                         <input class="upload-name3 upload" value="Test Setting" readonly>
-                        <button type="button" id="btn-file-upload" class="verify-button"> Verify </button>
+                    </div>
+                    <div class="btn-container">
+                        <input type="button" class="btn apply-example-btn" value="add Example">
+                        <button type="button" id="btn-file-upload" class="verify-button btn"> Verify </button>
                     </div>
                 </form>
-                <pre id="output" type="text/plain" class="text-md-left output"></pre>
+                <pre id="output" class = "result" type="text/plain" class="text-md-left output"></pre>
                 <p class="App-notes">
                     The contract source code must be verified on etherscan, and be compiled with its own version of
                     Solidity. This page uses a test suite implementation of the functional specification for ERC 20 using Truffle.

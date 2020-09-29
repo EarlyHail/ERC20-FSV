@@ -45,8 +45,28 @@ h2 {
 }
 .App-notes {
     padding: 34px 0;
+    line-height: 1.5;
     border-top: solid 1px #E1E1E2;
 }
+
+.result{
+    line-height: 1.5;
+    font-size: 16px;
+    font-family: inherit;
+    padding: 15px 0;
+}
+
+/*-------- input box --------*/
+#file-upload-form{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.fileBox {
+    width: 450px;
+}
+
 .fileBox input[type="file"] {
     position: absolute;
     width: 0;
@@ -59,6 +79,7 @@ h2 {
 .fileBox label {
     display: inline-block;
     padding: 10px 20px;
+    margin: 5px;
     color: #999;
     vertical-align: middle;
     background-color: #fdfdfd;
@@ -67,11 +88,20 @@ h2 {
     border-radius: 5px;
 }
 
+.btn-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin: 5px;
+}
+.btn-container > *{
+    /*align-self: flex-start;*/
+}
 /* named upload */
 .fileBox .upload {
     display: inline-block;
     height: 35px;
-    width: 20rem;
+    width: 320px;
     font-size:18px;
     padding: 0 10px;
     vertical-align: middle;
@@ -89,10 +119,10 @@ h2 {
     white-space: pre-wrap;
     word-break: break-word;
 }
-.verify-button {
-    width: 22%;
-    height: 46px;
-    margin-left: 2%;
+.btn {
+    width: 180px;
+    height: 40px;
+    margin-top: 12px;
     padding-right: 0.5rem;
     padding-left: 0.5rem;
     font-family: 'silka';
@@ -110,7 +140,7 @@ h2 {
     border-radius: 6px;
     cursor: pointer;
 }
-.verify-button:hover {
+.btn:hover {
     background-color: #4352d4;
 }
 .verifying-button{
@@ -121,6 +151,20 @@ h2 {
     color: #4e5ee4;
     opacity: .9;
 }
+/*------- app Sample -------*/
+.App-sample{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.App-sample > * {
+    align-self: center;
+}
+.sample-link{
+    font-size: 18px;
+}
+
+
 /*------- Example Lists -------*/
 .example-background{
     display: none;
@@ -131,7 +175,7 @@ h2 {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.22);
+    background-color: rgba(0, 0, 0, 0.25);
     overflow: hidden;
 }
 .display-flex{
@@ -157,12 +201,16 @@ h2 {
     right: -350px;
     transition: 0.3s;
 }
+.example-content{
+    background-color: #f8f8fa;
+    padding: 20px 40px;
+}
 .example-header{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     background-color: lightgray;
-    padding: 20px 40px;
+    padding: 20px 35px;
 }
 .example-header h4{
     padding: 0;
@@ -179,9 +227,6 @@ h2 {
     color: black;
     text-decoration: none;
     cursor: pointer;
-}
-.example-content{
-    padding: 20px 40px;
 }
 .example-card{
     margin: 15px 0px;
