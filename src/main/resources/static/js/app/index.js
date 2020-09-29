@@ -1,7 +1,10 @@
-const requestTest =  (formData) => {
+const requestTestWithFile =  (formData) => {
     fetch("/", {
         method: "POST",
-        body: formData,
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+        },
+        body: JSON.stringify(body),
     })
         .then((response) => {
             return response.text();
@@ -17,28 +20,80 @@ const requestTest =  (formData) => {
             alert("try again!!!");
         });
 }
+const requestTestWithToken = (tokenName) => {
+    fetch(`/${tokenName}`, {
+        method: "POST",
+    })
+        .then((response) => {
+            return response.text();
+        })
+        .then((result) => {
+            $('#output').innerHTML = result;
+            $('#btn-file-upload').text = 'Verify';
+            $('#btn-file-upload').classList.remove('verifying-button');
+        })
+        .catch((e) => {
+            console.log(e);
+            $('#btn-file-upload').text('Verify');
+            $('#btn-file-upload').classList.remove('verifying-button');
+            alert("try again!!!");
+        });
+}
+
+const inputValidation = () => {
+    const fileName1 = $('#file1').value;
+    const fileName2 = $('#file2').value;
+    const fileName3 = $('#file3').value;
+    try{
+        if(!!!fileName1 && !!!fileName2 && !!!fileName3){
+            const elUploadName = $$(".upload");
+            const validation = [...elUploadName].find(el => el.value.slice(-1) == "%" && el.value.slice(0, 1) == "%")
+            if(!!!validation) throw Error();
+            return "request-example";
+        }
+        const extension1 = fileName1.split(".")[1].toLowerCase();
+        const extension2 = fileName2.split(".")[1].toLowerCase();
+        const extension3 = fileName3.split(".")[1].toLowerCase();
+
+        let extension = "sol"
+        if (extension1 != extension || extension2 != extension) {
+            alert("File Extension must be .sol");
+            console.log("???????????");
+            return "error-extension";
+        }
+        extension = "js"
+        if(extension3 != extension){
+            alert("File Extension must be .js");
+            console.log("!!!!!");
+            return "error-extension";
+        }
+        console.log("................");
+        return "request-file"
+    }catch(e){
+        alert("need Token, Target, initialize file to Validate!")
+        return "error-input"
+    }
+}
 
 const startInputValidation = () => {
     $('#btn-file-upload').addEventListener('click', () => {
-        const fileName1 = $('#file1').value.split(".")[1].toLowerCase();
-        const fileName2 = $('#file2').value.split(".")[1].toLowerCase();
-        const fileName3 = $('#file3').value.split(".")[1].toLowerCase();
-        let extension = "sol"
-        if (fileName1 != extension || fileName2 != extension) {
-            alert("File Extension must be .sol");
-            return;
+        const [validate, type] = inputValidation().split("-");
+        if(validate == "error") return;
+
+        if(type == "file"){
+            const form = $('#file-upload-form');
+            const formData = new FormData(form);
+            $('#btn-file-upload').textContent = 'Verifying...';
+            $('#btn-file-upload').classList.add('verifying-button');
+            requestTestWithFile(formData);
+        }else if(type == "example"){
+            const tokenName = $(".upload-name1").value.replaceAll("%", "");
+            requestTestWithToken(tokenName);
         }
-        extension = "js"
-        if(fileName3 != extension){
-            alert("File Extension must be .js");
-            return;
-        }
-        const form = $('#file-upload-form');
-        const formData = new FormData(form);
-        $('#btn-file-upload').textContent = 'Verifying...';
-        $('#btn-file-upload').classList.add('verifying-button');
-        requestTest(formData);
     });
+}
+
+const startInputChange = () => {
     const files = ['file1', 'file2', 'file3'];
     files.forEach((fileInput, index) => {
         const elFileInput = document.getElementById(fileInput)
@@ -120,6 +175,23 @@ const startChangeExample = () => {
     })
 }
 
+const changeInputBox = () => {
+    const files = ['file1', 'file2', 'file3'];
+    const tokens = [...$$(".example-link")];
+    files.forEach((fileInput, index) => {
+        const elFileUpload = $(`.upload-name${index+1}`);
+        elFileUpload.value = `%${tokens[index].innerHTML.split(".")[0]}%`;
+
+        const elFileInput = $(`#file${index+1}`);
+        elFileInput.value = "";
+    });
+}
+const startApplyExample = () => {
+    $(".apply-example-btn").addEventListener("click", changeInputBox);
+}
+
+startInputChange();
 startInputValidation();
 startExampleBtn();
 startChangeExample();
+startApplyExample();

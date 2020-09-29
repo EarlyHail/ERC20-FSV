@@ -20,10 +20,17 @@ public class IndexController {
     @ResponseBody
     @RequestMapping(value="/", method= RequestMethod.POST)
     public String fileUpload(MultipartHttpServletRequest multi){
-        System.out.println("-----------");
         String output = indexService.runModule(multi);
         return "Hello this is result";
     }
+
+    @ResponseBody
+    @RequestMapping(value="/{tokenName}", method= RequestMethod.POST)
+    public String fileUpload(@PathVariable String tokenName){
+        System.out.println(tokenName);
+        return "Hello this is result";
+    }
+
 
     @ResponseBody
     @RequestMapping(value="/examples", method= RequestMethod.GET)
@@ -31,5 +38,4 @@ public class IndexController {
         List<String> exampleList = indexService.getListOfExample();
         return exampleList;
     }
-
 }
