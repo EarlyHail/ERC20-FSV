@@ -18,10 +18,11 @@ import java.util.stream.Stream;
 @Service
 public class IndexService {
     public static List<String> getListOfExample(){
-        try (Stream<Path> walk = Files.walk(Paths.get("C:\\Users\\User\\Downloads"))) {
+        try (Stream<Path> walk = Files.walk(Paths.get("C:\\Users\\Hojin\\Downloads\\top100tokens"))) {
             List<String> fullDirNames = walk.filter(Files::isDirectory)
                     .map(x -> x.toString()).collect(Collectors.toList());
             List<String> dirNames = new ArrayList();
+            fullDirNames.remove(0);
             fullDirNames.forEach(x -> dirNames.add(x.substring(x.lastIndexOf("\\")+1)));
             return dirNames;
         } catch (IOException e) {

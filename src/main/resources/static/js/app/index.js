@@ -49,11 +49,9 @@ const getLists = async () => {
         method: "GET",
     })
         .then((response) => {
-            console.log(response);
             return response.json();
         })
         .then((exampleList) => {
-            console.log(exampleList);
             return exampleList;
         })
         .catch((err) => {
@@ -65,29 +63,56 @@ const getExampleHTML = (text) => {
 }
 const renderExamples = (examples) => {
     const exampleContent = document.querySelector(".example-content");
-    for(let i=0; i<10; i++){
-        examples.forEach(example => {
-            exampleContent.insertAdjacentHTML("beforeend", getExampleHTML(example));
-        })
-    }
+    examples.forEach(example => {
+        exampleContent.insertAdjacentHTML("beforeend", getExampleHTML(example));
+    })
+}
+const closeExampleSidebar = () => {
+    const exampleContainer = document.querySelector(".example-container");
+    exampleContainer.classList.add("hide");
+    const exampleBackground = document.querySelector(".example-background");
+    setTimeout(() => {
+        exampleBackground.classList.remove("display-flex");
+    },500)
 }
 const startExampleBtn = () => {
     document.querySelector(".example-btn").addEventListener("click", async () => {
         const exampleContainer = document.querySelector(".example-container");
         const exampleContent = document.querySelector(".example-content");
-        if(!!exampleContent.children.length){
-            exampleContainer.classList.remove("hide");
-        }else{
+        if(!!!exampleContent.children.length){
             const examples = await getLists();
             await renderExamples(examples);
-            const exampleBackground = document.querySelector(".example-background");
-            exampleBackground.style.display = "block";
-            exampleContainer.classList.add("reveal");
         }
+        const exampleBackground = document.querySelector(".example-background");
+        exampleBackground.classList.add("display-flex");
+        setTimeout(() => {
+            exampleContainer.classList.remove("hide");
+            exampleContainer.classList.add("reveal");
+        },100)
     });
-    document.querySelector(".example-close-btn").addEventListener("click", () => {
-        const exampleContainer = document.querySelector(".example-container");
-        exampleContainer.classList.add("hide");
+    document.querySelector(".example-close-btn").addEventListener("click", closeExampleSidebar)
+    document.querySelector(".example-background").addEventListener("click", ({target}) => {
+        if(!!!target.classList.contains("example-background")) return;
+        closeExampleSidebar();
+    })
+
+}
+
+const changeExampleLink = (tokenName) => {
+    const [token, target, init] = [...document.querySelectorAll(".example-link")];
+    const linkTemplate = "https://github.com/moonhyeonah/Erc20FunctionalVerifier/blob/master/top100tokens"
+    token.innerHTML = `${tokenName}.sol`;
+    token.href = `${linkTemplate}/${tokenName}/${tokenName}.sol`
+    target.href = `${linkTemplate}/${tokenName}/Target.sol`
+    init.href = `${linkTemplate}/${tokenName}/initialize.js`
+}
+const startChangeExample = () => {
+    document.addEventListener("click", ({target}) => {
+        if(!!!target.classList.contains("example-card")) return;
+        changeExampleLink(target.innerHTML);
+        closeExampleSidebar();
     })
 }
+
 startExampleBtn();
+startChangeExample();
