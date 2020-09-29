@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Controller
 public class IndexController {
@@ -21,4 +23,12 @@ public class IndexController {
         String output = indexService.runModule(multi);
         return output;
     }
+
+    @ResponseBody
+    @RequestMapping(value="/examples", method= RequestMethod.GET)
+    public List<String> getListOfExample(){
+        List<String> exampleList = indexService.getListOfExample();
+        return exampleList;
+    }
+
 }

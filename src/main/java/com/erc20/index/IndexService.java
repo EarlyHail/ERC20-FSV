@@ -5,14 +5,30 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class IndexService {
-
+    public static List<String> getListOfExample(){
+        try (Stream<Path> walk = Files.walk(Paths.get("C:\\Users\\User\\Downloads"))) {
+            List<String> fullDirNames = walk.filter(Files::isDirectory)
+                    .map(x -> x.toString()).collect(Collectors.toList());
+            List<String> dirNames = new ArrayList();
+            fullDirNames.forEach(x -> dirNames.add(x.substring(x.lastIndexOf("\\")+1)));
+            return dirNames;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public String runModule(MultipartHttpServletRequest multi){
         String userToken = UUID.randomUUID().toString();
         String fileString = "";
