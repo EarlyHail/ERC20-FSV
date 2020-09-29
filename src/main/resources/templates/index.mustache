@@ -27,6 +27,9 @@
                       <a href = "https://github.com/moonhyeonah/Erc20FunctionalVerifier/blob/master/top100tokens/LINK/LINK.sol" target="_blank">LINK.sol</a>&nbsp;&nbsp;
                       <a href = "https://github.com/moonhyeonah/Erc20FunctionalVerifier/blob/master/top100tokens/LINK/Target.sol" target="_blank">Target.sol</a>&nbsp;&nbsp;
                       <a href = "https://github.com/moonhyeonah/Erc20FunctionalVerifier/blob/master/top100tokens/LINK/initialize.js" target="_blank">initialize.js</a>
+                    <div>
+                        <input type="button" class="example-btn" value="show Examples">
+                    </div>
                 </div>
                 <form id="file-upload-form">
                     <div class="fileBox pb-2">
@@ -53,60 +56,20 @@
                     Have any feedback? Share any thoughts in the <a href = "https://github.com/moonhyeonah/Erc20FunctionalVerifier" target="_blank">GitHub web site</a>
                 </p>
             </div>
+            <div class="example-container">
+                <div class="example-header">
+                    <h4>Examples</h4>
+                    <span class="example-close-btn">X</span>
+                </div>
+                <div class="example-content">
+                </div>
+            </div>
         </div>
     </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script>
-    $(document).ready(function(){
-        $('#btn-file-upload').on('click', function() {
-            var fileName1 = $('#file1').val();
-            var fileName2 = $('#file2').val();
-            var fileName3 = $('#file3').val();
-            fileName1 = fileName1.slice(fileName1.indexOf(".") + 1).toLowerCase();
-            fileName2 = fileName2.slice(fileName2.indexOf(".") + 1).toLowerCase();
-            fileName3 = fileName3.slice(fileName3.indexOf(".") + 1).toLowerCase();
-            var extension = "sol"
-            if (fileName1 != extension || fileName2 != extension) {
-                alert("File Extension must be .sol");
-                return;
-            }
-            extension = "js"
-            if(fileName3 != extension){
-                alert("File Extension must be .js");
-                return;
-            }
-            var form = $('#file-upload-form')[0];
-            var formData = new FormData(form);
+<script src="js/app/index.js">
 
-            $('#btn-file-upload').text('Verifying...');
-            $('#btn-file-upload').addClass('verifying-button');
-            $.ajax({
-                type: 'POST',
-                url: '/',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success : function(data){
-                    $('#output').html(data);
-                    $('#btn-file-upload').text('Verify');
-                    $('#btn-file-upload').removeClass('verifying-button');
-                },
-                error : function(){
-                    alert("Communication Failure");
-                    $('#btn-file-upload').text('Verify');
-                    $('#btn-file-upload').removeClass('verifying-button');
-                }
-            });
-        });
-        var files = ['#file1', '#file2', '#file3'];
-        $.each(files, function(index, fileClass) {
-            $(fileClass).on('change', function () {
-                var cur = $(fileClass).val();
-                $(".upload-name"+fileClass.charAt(fileClass.length-1)).val(cur);
-            });
-        });
-    });
 </script>
 
 </html>

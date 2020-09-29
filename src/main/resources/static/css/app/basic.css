@@ -121,3 +121,39 @@ h2 {
     color: #4e5ee4;
     opacity: .9;
 }
+/*------- Example Lists -------*/
+.example-container {
+    position: absolute;
+    overflow-y: scroll;
+    scroll-margin-top: 60px;
+    background-color: white;
+    top: 0;
+    height: 100%;
+    right: -350px;
+    width: 350px;
+}
+.reveal {
+    right: 0;
+    transition: 0.5s;
+}
+.hide {
+    right: -350px;
+    transition: 0.5s;
+}
+.example-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: lightgray;
+    padding: 20px 40px;
+}
+.example-header h4{
+    padding: 0;
+    margin: 0;
+}
+.example-content{
+    padding: 20px 40px;
+}
+.example-card{
+    padding: 7px 0px;
+}
