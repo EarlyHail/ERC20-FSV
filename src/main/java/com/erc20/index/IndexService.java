@@ -69,7 +69,7 @@ public class IndexService {
             Process p = Runtime.getRuntime().exec(linuxExecuteCommand);
             p.waitFor();
             String output = getExampleOutputFile(tokenName);
-            return output;
+            return output.replaceAll("\u001B\\[[;\\d]*m", "");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
