@@ -11,11 +11,11 @@ const requestTestWithFile =  (formData) => {
         })
         .then((result) => {
             $('#output').innerHTML = result;
-            $('#btn-file-upload').text = 'Verify';
+            $('#btn-file-upload').textContent = 'Verify';
             $('#btn-file-upload').classList.remove('verifying-button');
         })
         .catch(() => {
-            $('#btn-file-upload').text('Verify');
+            $('#btn-file-upload').textContent = 'Verify';
             $('#btn-file-upload').classList.remove('verifying-button');
             alert("try again!!!");
         });
@@ -29,12 +29,11 @@ const requestTestWithToken = (tokenName) => {
         })
         .then((result) => {
             $('#output').innerHTML = result;
-            $('#btn-file-upload').text = 'Verify';
+            $('#btn-file-upload').textContent = 'Verify';
             $('#btn-file-upload').classList.remove('verifying-button');
         })
-        .catch((e) => {
-            console.log(e);
-            $('#btn-file-upload').text('Verify');
+        .catch(() => {
+            $('#btn-file-upload').textContent = 'Verify';
             $('#btn-file-upload').classList.remove('verifying-button');
             alert("try again!!!");
         });
@@ -58,16 +57,13 @@ const inputValidation = () => {
         let extension = "sol"
         if (extension1 != extension || extension2 != extension) {
             alert("File Extension must be .sol");
-            console.log("???????????");
             return "error-extension";
         }
         extension = "js"
         if(extension3 != extension){
             alert("File Extension must be .js");
-            console.log("!!!!!");
             return "error-extension";
         }
-        console.log("................");
         return "request-file"
     }catch(e){
         alert("need Token, Target, initialize file to Validate!")
@@ -79,12 +75,11 @@ const startInputValidation = () => {
     $('#btn-file-upload').addEventListener('click', () => {
         const [validate, type] = inputValidation().split("-");
         if(validate == "error") return;
-
+        $('#btn-file-upload').textContent = 'Verifying...';
+        $('#btn-file-upload').classList.add('verifying-button');
         if(type == "file"){
             const form = $('#file-upload-form');
             const formData = new FormData(form);
-            $('#btn-file-upload').textContent = 'Verifying...';
-            $('#btn-file-upload').classList.add('verifying-button');
             requestTestWithFile(formData);
         }else if(type == "example"){
             const tokenName = $(".upload-name1").value.replaceAll("%", "");

@@ -50,6 +50,7 @@ h2 {
 }
 
 .result{
+    white-space: pre-wrap;
     line-height: 1.5;
     font-size: 16px;
     font-family: inherit;
