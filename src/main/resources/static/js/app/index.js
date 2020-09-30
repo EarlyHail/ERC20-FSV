@@ -132,6 +132,8 @@ const closeExampleSidebar = () => {
     const exampleContainer = $(".example-container");
     exampleContainer.classList.add("hide");
     const exampleBackground = $(".example-background");
+    const elBody = $("body");
+    elBody.classList.remove("disable-scroll");
     setTimeout(() => {
         exampleBackground.classList.remove("display-flex");
     },500)
@@ -146,6 +148,9 @@ const startExampleBtn = () => {
         }
         const exampleBackground = $(".example-background");
         exampleBackground.classList.add("display-flex");
+        const elBody = $("body");
+        elBody.classList.add("disable-scroll");
+        window.scrollTo(0, 0);
         setTimeout(() => {
             exampleContainer.classList.remove("hide");
             exampleContainer.classList.add("reveal");

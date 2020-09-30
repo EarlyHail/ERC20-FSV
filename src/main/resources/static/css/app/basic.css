@@ -181,6 +181,9 @@ h2 {
 .display-flex{
     display: flex;
 }
+.disable-scroll{
+    overflow: hidden;
+}
 .example-container{
     position: absolute;
     overflow-y: scroll;
@@ -203,6 +206,7 @@ h2 {
 }
 .example-content{
     background-color: #f8f8fa;
+    /*height: 100%;*/
     padding: 20px 40px;
 }
 .example-header{
