@@ -17,35 +17,83 @@ import java.util.stream.Stream;
 
 @Service
 public class IndexService {
-    public static List<String> getListOfExample(){
-        try (Stream<Path> walk = Files.walk(Paths.get("C:\\Users\\Hojin\\Downloads\\top100tokens"))) {
+    public List<String> getListOfExample(){
+        try (Stream<Path> walk = Files.walk(Paths.get(System.getProperty("user.home"), "Truffle_test", "top100tokens"))) {
             List<String> fullDirNames = walk.filter(Files::isDirectory)
                     .map(x -> x.toString()).collect(Collectors.toList());
             List<String> dirNames = new ArrayList();
             fullDirNames.remove(0);
-            fullDirNames.forEach(x -> dirNames.add(x.substring(x.lastIndexOf("\\")+1)));
+            fullDirNames.forEach(x -> dirNames.add(x.substring(x.lastIndexOf("/")+1)));
             return dirNames;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
+
+    private String getExampleOutputFile(String tokenName) throws IOException {
+        BufferedReader br = null;
+        StringBuilder sb = null;
+        String fileString = "";
+        try {
+            br = new BufferedReader(new FileReader(Paths.get(System.getProperty("user.home"), "Truffle_test", "top100tokens", tokenName, "output.txt").toFile()));
+            sb = new StringBuilder();
+            String line = br.readLine();
+//            String separator = System.getProperty("line.separator");
+            boolean printing = true;
+            while (line != null) {
+                if (line.contains("Compilation warnings encountered")){
+                    printing = false;
+                }
+                if (line.startsWith("\u001B")){
+                    printing = true;
+                }
+                if (printing) {
+//                    System.out.println(line);
+                    sb.append(line).append("<br>"); //for new line in HTML
+                    //sb.append(line).append(separator); //for new line in general
+                }
+                line = br.readLine();
+            }
+            fileString = sb.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            br.close();
+        }
+        return fileString;
+    }
+    public String runExample(String tokenName){
+        try {
+            String[] linuxExecuteCommand = { "sh", "/home/ec2-user/runExampleToken.sh", tokenName};
+            Process p = Runtime.getRuntime().exec(linuxExecuteCommand);
+            p.waitFor();
+            String output = getExampleOutputFile(tokenName);
+            return output;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     public String runModule(MultipartHttpServletRequest multi){
         String userToken = UUID.randomUUID().toString();
         String fileString = "";
         try{
-//            makeModule(userToken);
+            makeModule(userToken);
 
             putInputFile(multi, userToken);
 
-//            executeShell(userToken);
+            executeShell(userToken);
 
-//            fileString = getOutputFile(userToken);
+            fileString = getOutputFile(userToken);
 
         }catch(Exception e){
             e.printStackTrace();
         }finally{
-//            removeCopiedModule(userToken);
+            removeCopiedModule(userToken);
         }
         return fileString.replaceAll("\u001B\\[[;\\d]*m", "");
     }
@@ -70,13 +118,12 @@ public class IndexService {
             String uploadFile = files.next();
             MultipartFile mFile = multi.getFile(uploadFile);
             fileName = mFile.getOriginalFilename();
-            System.out.println(fileName);
             /*
             System.out.println("오리지날 파일 이름" + mFile.getOriginalFilename());
             System.out.println("파일크기" + mFile.getSize());
  */
             try {
-//                mFile.transferTo(new File(Paths.get(copiedPath, fileName).toString()));
+                mFile.transferTo(new File(Paths.get(copiedPath, fileName).toString()));
             } catch (Exception e) {
                 e.printStackTrace();
                 System.err.println("File Upload Error");
@@ -88,7 +135,6 @@ public class IndexService {
         String homePath = Paths.get(System.getProperty("user.home")).toString();
         try {
             String[] linuxExecuteCommand = { "sh", "/home/ec2-user/runmodule.sh", userToken};
-            Runtime runtime = Runtime.getRuntime();
             Process p = Runtime.getRuntime().exec(linuxExecuteCommand);
             p.waitFor();
         } catch (IOException e) {

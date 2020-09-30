@@ -21,14 +21,14 @@ public class IndexController {
     @RequestMapping(value="/", method= RequestMethod.POST)
     public String fileUpload(MultipartHttpServletRequest multi){
         String output = indexService.runModule(multi);
-        return "Hello this is result";
+        return output;
     }
 
     @ResponseBody
     @RequestMapping(value="/{tokenName}", method= RequestMethod.POST)
-    public String fileUpload(@PathVariable String tokenName){
-        System.out.println(tokenName);
-        return "Hello this is result";
+    public String runExample(@PathVariable String tokenName){
+        String output = indexService.runExample(tokenName);
+        return output;
     }
 
 
